@@ -5,6 +5,9 @@ import { setTimeoutPromise } from "../helpers"
 
 const AuthContext = createContext(null)
 
+
+// AUTH BEFORE REDUCER
+
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null)
     const [userIsLoggedIn, setUserIsLoggedIn] = useState(false)
