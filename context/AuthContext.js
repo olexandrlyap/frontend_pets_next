@@ -19,10 +19,6 @@ export const AuthProvider = ({children}) => {
     // Register User
 
     const register = async ({username, password, email}) => {
-        console.log(username)
-        console.log(password)
-        console.log(email) 
-
         try {
             const data = await axios.post(`${EXPRESS_URL}/api/v1/auth/register`, {
                 username,
@@ -30,12 +26,8 @@ export const AuthProvider = ({children}) => {
                 email
             }, { withCredentials: true })
 
-            console.log('register context', data)
-            console.log('register context', data.data.user)
-
-            setUser(data.data.user)
-            await setTimeoutPromise(3000)
-            
+            await setTimeoutPromise(3000)   
+    
         } catch (error) {
             setUser(null)
             setUserIsLoggedIn(false)

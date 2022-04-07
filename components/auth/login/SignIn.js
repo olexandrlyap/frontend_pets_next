@@ -1,17 +1,19 @@
 import { useState, useContext } from 'react'
 import Link from 'next/link'
 import Router from 'next/router'
-
+import axios from "axios"
+import { EXPRESS_URL} from '../../../config'
+import { setTimeoutPromise } from "../../../helpers"
 import SignInSocial from './SignInSocial'
 import LoadingButton from '../../partials/LoadingButton'
-import AuthContext from '../../../context/AuthContext'
+import { AuthDispatchContext } from '../../../context/auth/AuthContext'
 
 
 
 
 function SignIn () {
 
-  const { login } = useContext(AuthContext)
+    const dispatch = useContext(AuthDispatchContext)
 
     const [form, setForm] = useState({
         email: '',
@@ -20,9 +22,6 @@ function SignIn () {
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
    
-    
-
-    const clearFormInputs = (() => setForm(({ email: '', password: '' })))
 
     const handleChange = ((e) => {
         const { name, value } = e.target
@@ -36,10 +35,14 @@ function SignIn () {
         e.preventDefault()
         setIsLoading(true)
         setError('')
-
         try {
-            await login({email: form.email, password: form.password})
-            Router.push('/')
+            const data = await axios.post(`${EXPRESS_URL}/api/v1/auth/login`, {
+                    email: form.email,
+                    password: form.password
+            },{ withCredentials: true })
+            await setTimeoutPromise(2000)
+            dispatch({type: 'LOGIN', data})
+            
             
         }catch(e) {
             setIsLoading(false)

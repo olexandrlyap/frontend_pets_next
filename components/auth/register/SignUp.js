@@ -66,7 +66,6 @@ function SignUp () {
         e.preventDefault()
         setIsLoading(true)
         setFormWasClicked(true)
-        
         if(!formIsValid) {  
             setIsLoading(false) 
             return
@@ -75,9 +74,10 @@ function SignUp () {
         try {
             if( await checkForExistingUsername()) return
             if( await checkForExistingEmail()) return
+            setIsLoading(true)
             await register({username: form.username, password:form.password, email: form.email})
             setError('')
-            Router.push('/')
+            Router.push('/registrace/kontrola-emailu')
             
         }catch(e) {
             setError('Vyskytla se chyba. Zkuste to prosím později.')

@@ -8,8 +8,6 @@ export default function index() {
     
   const title = 'Potvrzení emailu'
 
-
-
   return (
       <div>
         <Head>
