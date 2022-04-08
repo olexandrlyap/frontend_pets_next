@@ -19,6 +19,7 @@ export const AuthProvider = ({children}) => {
     checkUserLoggedIn()
    }, [])
 
+   
     // Register User
 
     const register = async ({username, password, email}) => {

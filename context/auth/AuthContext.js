@@ -10,11 +10,11 @@ export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, initialState);
  
   return (
-    <AuthStateContext.Provider value={state}>
-      <AuthDispatchContext.Provider value={dispatch}>
-        {children}
-      </AuthDispatchContext.Provider>
-    </AuthStateContext.Provider>
+    <AuthDispatchContext.Provider value={dispatch}>
+      <AuthStateContext.Provider value={state}>
+          {children}
+      </AuthStateContext.Provider>
+    </AuthDispatchContext.Provider>
   )
 }
 

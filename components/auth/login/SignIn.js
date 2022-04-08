@@ -22,7 +22,6 @@ function SignIn () {
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
    
-
     const handleChange = ((e) => {
         const { name, value } = e.target
         setForm(prevState => ({
@@ -42,7 +41,7 @@ function SignIn () {
             },{ withCredentials: true })
             await setTimeoutPromise(2000)
             dispatch({type: 'LOGIN', data})
-            
+            Router.push('/')
             
         }catch(e) {
             setIsLoading(false)
