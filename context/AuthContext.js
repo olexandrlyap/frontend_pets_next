@@ -73,7 +73,6 @@ export const AuthProvider = ({children}) => {
 
         try {
             const data = await axios.get(`${EXPRESS_URL}/api/v1/users/showMe`, { withCredentials: true })
-            console.log('data is user logged in', data)
             
             if(!data) {
                 setUser(null)

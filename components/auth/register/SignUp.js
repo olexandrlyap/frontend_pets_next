@@ -1,17 +1,17 @@
 import { useState, useEffect, useContext } from 'react'
 import  Router  from 'next/router'
+import axios from "axios"
+
 
 import LoadingButton from '../../partials/LoadingButton'
 import SignUpSocial from './SignUpSocial'
-import AuthContext from '../../../context/AuthContext'
-
+import { setTimeoutPromise } from "../../../helpers/index"
+import { EXPRESS_URL } from '../../../config'
 import { validateEmail, validationRules, doesUsernameExist, doesEmailExist } from '../../../helpers/index'
 
 
 
 function SignUp () {
-
-    const { register, userIsLoggedIn } = useContext(AuthContext)
 
     const [form, setForm] = useState({
         username: '',
@@ -62,10 +62,27 @@ function SignUp () {
         }))
     })
 
+    const register = async ({username, password, email}) => {
+        try {
+            const data = await axios.post(`${EXPRESS_URL}/api/v1/auth/register`, {
+                username,
+                password,
+                email
+            }, { withCredentials: true })
+            await setTimeoutPromise(3000)   
+    
+        } catch (error) {
+            await setTimeoutPromise(2500)
+            throw new Error(`Chybové hlášení ${error}`)  
+        }
+    }
+
     const submit = ( async (e) => {
         e.preventDefault()
         setIsLoading(true)
         setFormWasClicked(true)
+        setError('')
+
         if(!formIsValid) {  
             setIsLoading(false) 
             return
@@ -80,6 +97,7 @@ function SignUp () {
             Router.push('/registrace/kontrola-emailu')
             
         }catch(e) {
+            console.log(e)
             setError('Vyskytla se chyba. Zkuste to prosím později.')
             setIsLoading(false)
         }
