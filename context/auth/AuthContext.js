@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const authenticate = async () => {
       const data = await getUser()
+      if(!data) return
       const { user } = await data.data
       user ? dispatch({type: 'AUTH_USER', user}) : dispatch({type: 'LOGOUT'})
     }

@@ -5,12 +5,10 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
     const { accessToken, refreshToken } = req.cookies
 
     if(!accessToken && !refreshToken) {
-        console.log('you are not auth')
-        return NextResponse.next()
+      console.log('user is authenticated')
+        return NextResponse.redirect('http://localhost:3000/prihlaseni')
     }
-
-    console.log('I have cookies')
+    console.log('user is not auth')
     return NextResponse.next()
-
  
 }

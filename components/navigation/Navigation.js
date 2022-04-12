@@ -14,12 +14,12 @@ import { AuthStateContext, AuthDispatchContext } from "../../context/auth/AuthCo
 export default function Navigation() {
 
   useEffect(() => {
-    setIsLoading(true)
+  /*   setIsLoading(true)
     const loading = async () => {
       await setTimeoutPromise(2000)
       setIsLoading(false)
     }
-    loading()
+    loading() */
     
     console.log('nav')
     console.log('nav user', user)
@@ -43,6 +43,7 @@ export default function Navigation() {
     Router.push('/')
   }
 
+
   const navigation = () => {
     return(
       <nav className="bg-white shadow">
@@ -64,7 +65,7 @@ export default function Navigation() {
               {/* <!-- Profile dropdown --> */}
 
               {
-                isAuthenticated || user
+                isAuthenticated 
                 ?
                 <>
                   <LogoutButton logout={handleLogout} />

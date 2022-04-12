@@ -10,7 +10,6 @@ export const getUser = async () => {
           return data
      } catch (error) {
           console.log('e', error)
-          throw new Error
      }
 }
 
