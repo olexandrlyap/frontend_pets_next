@@ -8,7 +8,7 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
       console.log('user is authenticated')
         return NextResponse.redirect('http://localhost:3000/prihlaseni')
     }
-    console.log('user is not auth')
+    console.log('user is authenticated and may proceed')
     return NextResponse.next()
  
 }
