@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "animate.css": "^4.1.1",
     "axios": "^0.26.1",
     "lottie-web": "^5.9.1",
     "next": "12.1.4",

@@ -1,11 +1,12 @@
 import Layout from "../components/layouts/Layout"
+import Header from "../components/mainPage/header/Header"
+import Main from "../components/mainPage/main/Main"
 
 export default function Home() {
   return (
    <Layout>
-     <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+     <Header />
+     <Main />
    </Layout>
   )
 }
