@@ -6,7 +6,7 @@ import Navigation from "../navigation/Navigation"
 export default function Layout({title, keywords, description, children}) {
 
   return (
-    <div>
+    <div className="w-full h-full">
         <Head>
             <title>{title}</title>
             <meta name='description' content={description} />

@@ -85,21 +85,23 @@ export default function Links() {
       }
       return notVisibleClass
   }
+
+
   
   return (
-    <div ref={containerRef} className="flex flex-col items-center p-10 bg-gray-100">
+    <div ref={containerRef} className="flex flex-col items-center p-10 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-600">
 
-            <h2 className="mb-5 text-2xl font-semibold tracking-tighter  text-gray-900">What are you looking for?</h2>
+            <h2 className="mb-5 text-2xl font-semibold tracking-tighter  text-white">What are you looking for?</h2>
 
             <div className={determineClass()}>
                 {
                     links.map((link) => {
                         return(
-                            <div key={link.id} className="flex flex-col justify-center items-center h-40 w-36 flex-shrink   p-8 m-5 shadow-sm  bg-white hover:border-2 hover:border-indigo-500 rounded">
+                            <div key={link.id} className="flex flex-col justify-center items-center  w-20 h-24 md:h-40 md:w-36 flex-shrink   p-8 m-5 shadow-sm  bg-white hover:border-2 hover:border-indigo-500 rounded">
                                 <Link href={link.link}>
                                     <a>
                                         <Image src={link.icon} width={64} height={64}/>
-                                        <h3 className='text-lg font-medium  hover:text-gray-600 text-center'>{link.heading}</h3>
+                                        <h3 className='text-lg font-bold text-center'>{link.heading}</h3>
                                     </a>
                                 </Link>
                             </div>
@@ -107,9 +109,6 @@ export default function Links() {
                     })
                 }
             </div>
-
-
-
     </div>
 
   )
