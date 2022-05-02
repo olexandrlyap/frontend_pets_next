@@ -11,8 +11,6 @@ export default function Header() {
     const heading = 'Be loved. Get an animal and help.'
 
     useEffect(() => {
-        headingRef.current.textContent = ''
-        
         const animate = async () => {
             await setTimeoutPromise(1000)
             await textAnimation({ heading, headingRef  })
