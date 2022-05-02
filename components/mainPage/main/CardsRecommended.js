@@ -7,7 +7,7 @@ import Link from "next/link";
 import { EXPRESS_URL } from "../../../config";
 import {  useWindowSize } from "../../../hooks";
 import { setTimeoutPromise } from "../../../helpers"
-import Card from "./Card"
+import Card from "../../partials/card/Card"
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -92,7 +92,7 @@ export default function CardsRecommended() {
   return (
     <div className="p-3 md:m-10 bg-gray-50">
         <div className="flex justify-between items-center">
-             <h2 className="my-10 text-4xl font-extrabold tracking-tight text-gray-900">Checkout pets for adoption</h2>
+             <h2 className="my-10 text-2xl md:text-4xl font-extrabold tracking-tight text-gray-900">Checkout pets for adoption</h2>
              <Link href='/pets'>
                  <a className="text-indigo-500 text-sm font-medium ">Show more </a>
              </Link>
