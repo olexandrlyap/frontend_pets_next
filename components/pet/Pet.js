@@ -1,10 +1,10 @@
-import ImageGalery from './ImageGalery'
+import ImageGallery from './ImageGallery'
 
 export default function Pet({pet}) {
   return (
     <main className=''>
         <div className=''>
-            <ImageGalery />
+            <ImageGallery />
         </div>
         <div className='bg-red-500'>
             text here
