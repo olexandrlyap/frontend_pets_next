@@ -1,0 +1,243 @@
+import { useState, useEffect, useRef } from "react";
+import Layout from "../../components/layouts/Layout"
+import Card from "../../components/partials/card/Card"
+import Menu from "../../components/pets/Menu";
+import MobileMenu from "../../components/pets/MobileMenu";
+const pets = [
+    {
+      id: 1,
+      name: 'Shiba s pp',
+      slug: 'test',
+      type: 'kočka',
+      breed: 'perská',
+      contract: 'koupě',
+      description: 'Lorem descriptiium',
+      now_available: true,
+      notes: '',
+      age: 'senior',
+      main_image: {
+        url: 'https://res.cloudinary.com/de9rel1yu/image/upload/v1653293436/pets/dbt8tbskxmcg78wvzqmq.jpg'
+      },
+      price: 'dohodou',
+      fees: 0,
+      tags: [
+        {name: 's pp'},
+        {name: 'nekouše'},
+        {name: 'přátelský'}
+      ],
+      user: {
+        username: 'loretest'
+      }
+    },
+    {
+      id: 2,
+      name: 'Mucek',
+      slug: 'test',
+      type: 'kočka',
+      breed: 'perská',
+      contract: 'koupě',
+      description: 'Lorem descriptiium',
+      now_available: false,
+      notes: 'here are noptes',
+      age: 'senior',
+      main_image: {
+        url: 'https://res.cloudinary.com/de9rel1yu/image/upload/v1653296885/pets/karsten-winegeart-NE0XGVKTmcA-unsplash_pwxtaj.jpg'
+      },
+      price: 10000,
+      fees: 0,
+      tags: [
+        {name: 's pp'},
+        {name: 'nekouše'},
+        {name: 'přátelský'}
+      ],
+      user: {
+        username: 'loretest'
+      }
+    },
+  
+    {
+      id: 3,
+      name: 'Štěně Shiby',
+      slug: 'test',
+      type: 'kočka',
+      breed: 'perská',
+      contract: 'koupě',
+      description: 'Lorem descriptiium',
+      now_available: true,
+      notes: 'here are noptes Lorem descriptiium Lorem descriptiium Lorem descriptiium',
+      age: 'senior',
+      main_image: {
+        url: 'https://res.cloudinary.com/de9rel1yu/image/upload/v1653296922/pets/alvan-nee-ZCHj_2lJP00-unsplash_zyr6va.jpg'
+      },
+      price: 10000,
+      fees: 0,
+      tags: [
+        {name: 's pp'},
+        {name: 'nekouše'},
+        {name: 'přátelský'}
+      ],
+      user: {
+        username: 'loretest'
+      }
+    },
+  
+    {
+      id: 4,
+      name: 'Johny',
+      slug: 'test',
+      type: 'pes',
+      breed: 'shiba',
+      contract: 'darování',
+      description: 'Lorem descriptiium',
+      now_available: true,
+      notes: 'here are noptes',
+      age: 'senior',
+      main_image: {
+        url: 'https://res.cloudinary.com/de9rel1yu/image/upload/v1653296905/pets/taylor-kopel-WX4i1Jq_o0Y-unsplash_wccuph.jpg'
+      },
+      price: 'zdarma',
+      fees: 0,
+      tags: [
+        {name: 's pp'},
+        {name: 'nekouše'},
+        {name: 'přátelský'},
+        {name: 'vhodný pro děti'},
+        {name: 'jídlo zdarma'}
+      ],
+      user: {
+        username: 'loretest'
+      }
+    },
+  ]
+export default function Index() {
+  const [showMobileMenu, setShowMobileMenu] = useState(false)
+  const [showSort, setShowSort] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const hideMobileMenu = () => setShowMobileMenu(false)
+  
+  return (
+    <Layout>
+      <div className="bg-white">
+
+        {/* MOBILE, TABLET DARK BACKGROUND */}
+       { 
+        showMobileMenu&&<div>
+            <div className="relative z-40 lg:hidden" role="dialog" aria-modal="true">
+          {/*     <!--
+                Off-canvas menu backdrop, show/hide based on off-canvas menu state.
+
+                Entering: "transition-opacity ease-linear duration-300"
+                  From: "opacity-0"
+                  To: "opacity-100"
+                Leaving: "transition-opacity ease-linear duration-300"
+                  From: "opacity-100"
+                  To: "opacity-0"
+              --> */}
+              <div className="fixed inset-0 bg-black bg-opacity-25"></div>
+            </div>
+          </div>
+        }
+
+
+        {/* MOBILE, TABLET MENU */}
+        <div>
+        {/*   <!--
+            Mobile filter dialog
+
+            Off-canvas menu for mobile, show/hide based on off-canvas menu state.
+          --> */}
+
+          < MobileMenu showMobileMenu={showMobileMenu}  hideMobileMenu={hideMobileMenu} />
+        
+
+
+          {/* Breadcrumb */}
+
+      {/*     <div className="border-b border-gray-200">
+            <nav aria-label="Breadcrumb" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <ol role="list" className="flex items-center space-x-4 py-4">
+                <li>
+                  <div className="flex items-center">
+                    <a href="#" className="mr-4 text-sm font-medium text-gray-900"> Men </a>
+                    <svg viewBox="0 0 6 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="h-5 w-auto text-gray-300">
+                      <path d="M4.878 4.34H3.551L.27 16.532h1.327l3.281-12.19z" fill="currentColor" />
+                    </svg>
+                  </div>
+                </li>
+
+                <li className="text-sm">
+                  <a href="#" aria-current="page" className="font-medium text-gray-500 hover:text-gray-600"> New Arrivals </a>
+                </li>
+              </ol>
+            </nav>
+          </div> */}
+
+
+          {/* PRODUCTS AND HEADING section */}
+
+          <main className="max-w-2xl mx-auto px-4 lg:max-w-7xl lg:px-8">
+            <div className="border-b border-gray-200 pt-24 pb-10">
+              <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">Have a look at these pets</h1>
+
+                <div className="lg:flex justify-between mt-2">
+                <input id="search" type="search" placeholder="What are you searching for?" className="block w-60 shadow-sm  px-1 py-3 rounded-md border-0 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 " />
+                  
+                  <div className="relative z-20 inline-block text-left ">
+                    <div>
+                      <button onClick={() => setShowSort(value => !value)} type="button" className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900" id="menu-button" aria-expanded="false" aria-haspopup="true">
+                        Sort
+                        <svg className="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    {
+                      showSort&&<div className="origin-top-left absolute left-0 z-10 mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                      <div className="py-1" role="none">
+
+                        <a href="#" className="block px-4 py-2 text-sm font-medium text-gray-900" role="menuitem" tabindex="-1" id="menu-item-0"> Most Popular </a>
+
+                        <a href="#" className="block px-4 py-2 text-sm font-medium text-gray-900" role="menuitem" tabindex="-1" id="menu-item-1"> Best Rating </a>
+
+                        <a href="#" className="block px-4 py-2 text-sm font-medium text-gray-900" role="menuitem" tabindex="-1" id="menu-item-2"> Newest </a>
+
+                        <a href="#" className="block px-4 py-2 text-sm font-medium text-gray-900" role="menuitem" tabindex="-1" id="menu-item-3"> Price: Low to High </a>
+
+                        <a href="#" className="block px-4 py-2 text-sm font-medium text-gray-900" role="menuitem" tabindex="-1" id="menu-item-4"> Price: High to Low </a>
+                      </div>
+                    </div>}
+                  </div>
+                </div>
+
+
+              
+            </div>
+            <div className="pt-12 pb-24 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
+              <aside>
+                <h2 className="sr-only">Filters</h2>
+                <button onClick={() => setShowMobileMenu(true)} type="button" className="inline-flex items-center lg:hidden">
+                  <span className="text-sm font-medium text-gray-700">Filters</span>
+                  <svg className="flex-shrink-0 ml-1 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+                <Menu />
+              </aside>
+              <section aria-labelledby="product-heading" className="mt-6 lg:mt-0 lg:col-span-2 xl:col-span-3">
+                <h2 id="product-heading" className="sr-only">Products</h2>
+                <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
+                    {pets.map((pet) => (
+                      <Card key={pet.id} pet={pet} loading={loading} />
+                    ))}
+                </div>
+              </section>
+            </div>
+          </main>
+        </div>
+      </div>
+
+    </Layout>
+  )
+}

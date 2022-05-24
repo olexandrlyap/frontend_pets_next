@@ -22,7 +22,7 @@ export default function ImageGallery() {
       }}
       spaceBetween={10}
       navigation={true}
-      thumbs={{ swiper: thumbsSwiper }}
+      thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
       modules={[FreeMode, Navigation, Thumbs]}
       className="mySwiper2"
     >

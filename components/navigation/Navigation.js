@@ -11,21 +11,8 @@ import { AuthStateContext, AuthDispatchContext } from "../../context/auth/AuthCo
 
 
 
-export default function Navigation() {
+export default function Navigation({isFixed}) {
 
-  useEffect(() => {
-  /*   setIsLoading(true)
-    const loading = async () => {
-      await setTimeoutPromise(2000)
-      setIsLoading(false)
-    }
-    loading() */
-    
-    console.log('nav')
-    console.log('nav user', user)
-    console.log('nav isAuth', isAuthenticated)
-
-  }, [])
     
   const {logout, isAuthenticated, user} = useContext(AuthStateContext)
   const dispatch = useContext(AuthDispatchContext)
@@ -37,6 +24,9 @@ export default function Navigation() {
   const handleProfileClick = ((isOpenState) =>  setIsOpen(!isOpenState))
   const handleMenuClick = ((isOpenState) => setIsMenuOpen(!isOpenState))
 
+  const navFixed = 'bg-white shadow fixed z-30'
+  const nav = 'bg-white shadow'
+
   const handleLogout = async () => {
     await logout()
     dispatch({type: 'LOGOUT'})
@@ -46,7 +36,7 @@ export default function Navigation() {
 
   const navigation = () => {
     return(
-      <nav className="bg-white shadow">
+      <nav className={isFixed ? navFixed : nav}>
         <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
           <div className="relative flex items-center justify-between h-16">
 
@@ -109,4 +99,9 @@ export default function Navigation() {
    }
    </>
   )
+}
+
+
+Navigation.defaultProps = {
+  isFixed: false
 }
