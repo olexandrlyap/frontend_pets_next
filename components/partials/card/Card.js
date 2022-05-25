@@ -9,34 +9,28 @@ import SuccessAlert from '../SuccessAlert'
 
 
 export default function Card({pet, loading, scale, showAlert}) {
+  const [isHovered, setIsHovered] = useState(false)
+
   const adoptionBadge = 'inline-flex shrink items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800'
   const withScaleStyle = 'flex flex-col md:hover:scale-110 '
   const withoutScaleStyle = 'flex flex-col min-h-0'
 
-  useEffect(() => {
-   
-      
-  }, [])
-
+  const handleHover = (e) => e.type === 'mouseenter' ? setIsHovered(true) : setIsHovered(false)
   
-
   const addFavorite = async (pet) => {
     const petID = pet._id
     try {
       const response = await axios.post(`${EXPRESS_URL}/api/v1/favorite-pets/${petID }`, {
-        
       }, { withCredentials: true } )
       showAlert('Success, you have favorite pet')
-      console.log(response)
       
     } catch (error) {
       showAlert('You have allready favorited this pet')
-      console.log('addToFavorite', error)
     }
   }
 
   const card = () => (
-    <div className= {scale ? withScaleStyle : withoutScaleStyle}>
+    <div onMouseEnter={handleHover} onMouseLeave={handleHover}  className= {scale ? withScaleStyle : withoutScaleStyle}>
     <div className="relative">
       <div className="relative w-full h-72 rounded-lg overflow-hidden">
       <Link href={`uzivatele/${pet.user.username}/${pet.slug}`}>
@@ -67,28 +61,22 @@ export default function Card({pet, loading, scale, showAlert}) {
             </p>)
           }
         </div>
-
-        {/* add notes??? */}
-       {/*  <div className="flex justify-between">
-        <p className="mt-1 w-3/4 text-justify text-sm text-gray-500">{pet.notes}</p>
-          <button className=" relative flex-none shrink flex items-center self-center justify-center  md:w-9 md:h-9 rounded-md text-slate-300 border border-slate-200" type="button" aria-label="Like">
-              <svg width="20" height="20" fill="currentColor" aria-hidden="true">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
-              </svg>
-          </button>
-        </div> */}
+       {
+        isHovered&&<div className="flex justify-between">
+            <p className="mt-1 w-3/4 text-justify text-sm text-gray-500">{pet.notes}</p>
+             <p>{pet.breed}</p>
+        </div>
+        }
       </div>
-
-     {/* SHOW HEARTS ON HOVER || WHEN IS FAVORITED */}
-      <div className="  absolute  -top-56 right-0 h-72 rounded-lg p-4 flex items-end justify-end overflow-hidden cursor-pointer "> 
+      {
+        isHovered&&<div className=" absolute  -top-56 right-0 h-72 rounded-lg p-4 flex items-end justify-end overflow-hidden cursor-pointer "> 
           <button onClick={() => addFavorite(pet)} className=" z-20 relative flex-none  flex items-center justify-center  w-9 h-9  text-white " type="button" aria-label="Like">
               <svg width="20" height="20" fill="currentColor" aria-hidden="true">
               <path fillRule="evenodd" clipRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
               </svg>
           </button>
-
       </div>
-      
+      }
       <div className="absolute top-0 inset-x-0 h-72 rounded-lg p-4 flex items-end justify-end overflow-hidden z-10">
         <div
           aria-hidden="true"
