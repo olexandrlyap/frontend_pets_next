@@ -5,7 +5,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import CardLoadingSkeleton from './CardLoadingSkeleton'
 import { EXPRESS_URL } from '../../../config'
-import SuccessAlert from '../SuccessAlert'
+import { formatTimeFromNow } from '../../../helpers'
+
 
 
 export default function Card({pet, loading, scale, showAlert}) {
@@ -62,9 +63,28 @@ export default function Card({pet, loading, scale, showAlert}) {
           }
         </div>
        {
-        isHovered&&<div className="flex justify-between">
-            <p className="mt-1 w-3/4 text-justify text-sm text-gray-500">{pet.notes}</p>
-             <p>{pet.breed}</p>
+        <div className="flex justify-between ">
+            <div className='flex  justify-between w-full text-gray-500'>
+              <div className='flex items-center '>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                  <p className='text-xs'>{pet.breed}</p>
+              </div>
+              <div className='flex items-center'>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                </svg>
+                  <p className='text-xs'>{pet.age}</p>
+              </div>
+              <div className='flex items-center'>
+                {/*   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                  </svg> */}
+                  <p className='text-xs'>{formatTimeFromNow(pet.createdAt)}</p>
+              </div>
+            </div>
+            
         </div>
         }
       </div>
@@ -80,7 +100,7 @@ export default function Card({pet, loading, scale, showAlert}) {
       <div className="absolute top-0 inset-x-0 h-72 rounded-lg p-4 flex items-end justify-end overflow-hidden z-10">
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50"
+          className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50 "
         />
         {
           pet.now_available&&<p className="relative text-xs font-semibold text-white">Dostupný ihned</p>  

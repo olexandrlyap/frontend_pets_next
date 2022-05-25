@@ -1,120 +1,38 @@
 import { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import { EXPRESS_URL }from '../../config'
+import { setTimeoutPromise } from '../../helpers'
 import Layout from "../../components/layouts/Layout"
 import Card from "../../components/partials/card/Card"
 import Menu from "../../components/pets/Menu";
 import MobileMenu from "../../components/pets/MobileMenu";
-const pets = [
-    {
-      id: 1,
-      name: 'Shiba s pp',
-      slug: 'test',
-      type: 'kočka',
-      breed: 'perská',
-      contract: 'koupě',
-      description: 'Lorem descriptiium',
-      now_available: true,
-      notes: '',
-      age: 'senior',
-      main_image: {
-        url: 'https://res.cloudinary.com/de9rel1yu/image/upload/v1653293436/pets/dbt8tbskxmcg78wvzqmq.jpg'
-      },
-      price: 'dohodou',
-      fees: 0,
-      tags: [
-        {name: 's pp'},
-        {name: 'nekouše'},
-        {name: 'přátelský'}
-      ],
-      user: {
-        username: 'loretest'
-      }
-    },
-    {
-      id: 2,
-      name: 'Mucek',
-      slug: 'test',
-      type: 'kočka',
-      breed: 'perská',
-      contract: 'koupě',
-      description: 'Lorem descriptiium',
-      now_available: false,
-      notes: 'here are noptes',
-      age: 'senior',
-      main_image: {
-        url: 'https://res.cloudinary.com/de9rel1yu/image/upload/v1653296885/pets/karsten-winegeart-NE0XGVKTmcA-unsplash_pwxtaj.jpg'
-      },
-      price: 10000,
-      fees: 0,
-      tags: [
-        {name: 's pp'},
-        {name: 'nekouše'},
-        {name: 'přátelský'}
-      ],
-      user: {
-        username: 'loretest'
-      }
-    },
-  
-    {
-      id: 3,
-      name: 'Štěně Shiby',
-      slug: 'test',
-      type: 'kočka',
-      breed: 'perská',
-      contract: 'koupě',
-      description: 'Lorem descriptiium',
-      now_available: true,
-      notes: 'here are noptes Lorem descriptiium Lorem descriptiium Lorem descriptiium',
-      age: 'senior',
-      main_image: {
-        url: 'https://res.cloudinary.com/de9rel1yu/image/upload/v1653296922/pets/alvan-nee-ZCHj_2lJP00-unsplash_zyr6va.jpg'
-      },
-      price: 10000,
-      fees: 0,
-      tags: [
-        {name: 's pp'},
-        {name: 'nekouše'},
-        {name: 'přátelský'}
-      ],
-      user: {
-        username: 'loretest'
-      }
-    },
-  
-    {
-      id: 4,
-      name: 'Johny',
-      slug: 'test',
-      type: 'pes',
-      breed: 'shiba',
-      contract: 'darování',
-      description: 'Lorem descriptiium',
-      now_available: true,
-      notes: 'here are noptes',
-      age: 'senior',
-      main_image: {
-        url: 'https://res.cloudinary.com/de9rel1yu/image/upload/v1653296905/pets/taylor-kopel-WX4i1Jq_o0Y-unsplash_wccuph.jpg'
-      },
-      price: 'zdarma',
-      fees: 0,
-      tags: [
-        {name: 's pp'},
-        {name: 'nekouše'},
-        {name: 'přátelský'},
-        {name: 'vhodný pro děti'},
-        {name: 'jídlo zdarma'}
-      ],
-      user: {
-        username: 'loretest'
-      }
-    },
-  ]
+
 export default function Index() {
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [showSort, setShowSort] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [pets, setPets] = useState([])
 
   const hideMobileMenu = () => setShowMobileMenu(false)
+
+  useEffect(() => {
+    fetchPets()
+  }, [])
+
+  const fetchPets = async () => {
+    setLoading(true)
+    try {
+        const response = await axios.get(`${EXPRESS_URL}/api/v1/pets/recommended/main`)
+        const data = await response.data.pets
+        setPets(data)
+        await setTimeoutPromise(1000)
+        setLoading(false)
+        console.log(data)
+    } catch (error) {
+        setLoading(false)
+        console.log(error)    
+    }
+  }
   
   return (
     <Layout>
@@ -201,11 +119,6 @@ export default function Index() {
 
                         <a href="#" className="block px-4 py-2 text-sm font-medium text-gray-900" role="menuitem" tabindex="-1" id="menu-item-1"> Best Rating </a>
 
-                        <a href="#" className="block px-4 py-2 text-sm font-medium text-gray-900" role="menuitem" tabindex="-1" id="menu-item-2"> Newest </a>
-
-                        <a href="#" className="block px-4 py-2 text-sm font-medium text-gray-900" role="menuitem" tabindex="-1" id="menu-item-3"> Price: Low to High </a>
-
-                        <a href="#" className="block px-4 py-2 text-sm font-medium text-gray-900" role="menuitem" tabindex="-1" id="menu-item-4"> Price: High to Low </a>
                       </div>
                     </div>}
                   </div>
@@ -220,7 +133,7 @@ export default function Index() {
                 <button onClick={() => setShowMobileMenu(true)} type="button" className="inline-flex items-center lg:hidden">
                   <span className="text-sm font-medium text-gray-700">Filters</span>
                   <svg className="flex-shrink-0 ml-1 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                    <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
                   </svg>
                 </button>
                 <Menu />

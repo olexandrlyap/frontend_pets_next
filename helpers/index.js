@@ -4,6 +4,7 @@ import setTimeoutPromise from './setTimeoutPromise'
 import doesUsernameExist from "./doesUsernameExist";
 import doesEmailExist from "./doesEmailExist";
 import  textAnimation  from "./textAnimation";
+import formatTimeFromNow from "./formatTimeFromNow";
 
 export { 
     validateEmail, 
@@ -11,5 +12,7 @@ export {
     setTimeoutPromise, 
     doesUsernameExist,
     doesEmailExist,
-    textAnimation
- }
+    textAnimation,
+    formatTimeFromNow,
+
+}
