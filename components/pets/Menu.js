@@ -5,6 +5,46 @@ import PetCategoryTypes from "./PetCategoryTypes"
 import PetCategoryContracts from "./PetCategoryContracts"
 import PetCategoryAge from "./PetCategoryAge"
 import PetCategoryTags from "./PetCategoryTags"
+import PetBreeds from "./PetBreeds"
+
+
+const allowedBreeds = [
+  {
+    id: 1,
+    type: 'cat',
+    name: 'perská'
+  },
+  {
+    id: 2,
+    type: 'cat',
+    name: 'obyčejná'
+  },
+  {
+    id: 3,
+    type: 'cat',
+    name: 'májská mývalí'
+  },
+  {
+    id: 4,
+    type: 'cat',
+    name: 'ragdoll'
+  },
+  {
+    id: 5,
+    type: 'pes',
+    name: 'retriever'
+  },
+  {
+    id: 6,
+    type: 'pes',
+    name: 'pitbull'
+  },
+  {
+    id: 7,
+    type: 'ostatní',
+    name: 'kůň'
+  }
+]
 
 export default function Menu({categoryAge, categoryTypes, categoryContracts, categoryTags, handleTagSelect}) {
 
@@ -29,6 +69,21 @@ export default function Menu({categoryAge, categoryTypes, categoryContracts, cat
                   </div>
                 </fieldset>
               </div>
+
+              <div className="pt-4">
+                <fieldset>
+                  <div className="pt-6 space-y-3">
+                    {/* display cat breeds */}
+                      <PetBreeds breeds={allowedBreeds} type={'cat'}/>
+                      {/* display dog breeds */}
+                      <PetBreeds breeds={allowedBreeds} type={'dog'}/>
+                      {/* display other breeds */}
+                      <PetBreeds breeds={allowedBreeds} type={'other'}/>
+
+                  </div>
+                </fieldset>
+              </div>
+
 
               <div className="pt-10">
                 <fieldset>

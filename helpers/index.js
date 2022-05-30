@@ -5,6 +5,7 @@ import doesUsernameExist from "./doesUsernameExist";
 import doesEmailExist from "./doesEmailExist";
 import  textAnimation  from "./textAnimation";
 import formatTimeFromNow from "./formatTimeFromNow";
+import capitalizeFirstLetter from "./capitalizeFirstLetter";
 
 export { 
     validateEmail, 
@@ -14,5 +15,6 @@ export {
     doesEmailExist,
     textAnimation,
     formatTimeFromNow,
+    capitalizeFirstLetter
 
 }

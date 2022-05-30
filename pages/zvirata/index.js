@@ -85,7 +85,6 @@ export default function Index() {
         ...prevStateTag
       }
     )))
-    console.log('index parent select', categoryTags)
   }
 
   
