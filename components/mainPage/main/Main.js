@@ -7,9 +7,10 @@ import Categories from "./Categories"
 export default function Main() {
   return (
     <main className="flex flex-col">
-       <Categories />
-
        <CardsAdoption />
+       <Categories />
+       <CardsAdoption />
+
 
 
 

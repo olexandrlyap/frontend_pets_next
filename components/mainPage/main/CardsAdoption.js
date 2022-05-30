@@ -19,113 +19,6 @@ import 'swiper/css/effect-fade';
 import SuccessAlert from "../../partials/SuccessAlert";
 
 
-const pets = [
-  {
-    id: 1,
-    name: 'Shiba s pp',
-    slug: 'test',
-    type: 'kočka',
-    breed: 'perská',
-    contract: 'koupě',
-    description: 'Lorem descriptiium',
-    now_available: true,
-    notes: '',
-    age: 'senior',
-    main_image: {
-      url: 'https://res.cloudinary.com/de9rel1yu/image/upload/v1653293436/pets/dbt8tbskxmcg78wvzqmq.jpg'
-    },
-    price: 'dohodou',
-    fees: 0,
-    tags: [
-      {name: 's pp'},
-      {name: 'nekouše'},
-      {name: 'přátelský'}
-    ],
-    user: {
-      username: 'loretest'
-    }
-  },
-  {
-    id: 2,
-    name: 'Mucek',
-    slug: 'test',
-    type: 'kočka',
-    breed: 'perská',
-    contract: 'koupě',
-    description: 'Lorem descriptiium',
-    now_available: false,
-    notes: 'here are noptes',
-    age: 'senior',
-    main_image: {
-      url: 'https://res.cloudinary.com/de9rel1yu/image/upload/v1653296885/pets/karsten-winegeart-NE0XGVKTmcA-unsplash_pwxtaj.jpg'
-    },
-    price: 10000,
-    fees: 0,
-    tags: [
-      {name: 's pp'},
-      {name: 'nekouše'},
-      {name: 'přátelský'}
-    ],
-    user: {
-      username: 'loretest'
-    }
-  },
-
-  {
-    id: 3,
-    name: 'Štěně Shiby',
-    slug: 'test',
-    type: 'kočka',
-    breed: 'perská',
-    contract: 'koupě',
-    description: 'Lorem descriptiium',
-    now_available: true,
-    notes: 'here are noptes Lorem descriptiium Lorem descriptiium Lorem descriptiium',
-    age: 'senior',
-    main_image: {
-      url: 'https://res.cloudinary.com/de9rel1yu/image/upload/v1653296922/pets/alvan-nee-ZCHj_2lJP00-unsplash_zyr6va.jpg'
-    },
-    price: 10000,
-    fees: 0,
-    tags: [
-      {name: 's pp'},
-      {name: 'nekouše'},
-      {name: 'přátelský'}
-    ],
-    user: {
-      username: 'loretest'
-    }
-  },
-
-  {
-    id: 4,
-    name: 'Johny',
-    slug: 'test',
-    type: 'pes',
-    breed: 'shiba',
-    contract: 'darování',
-    description: 'Lorem descriptiium',
-    now_available: true,
-    notes: 'here are noptes',
-    age: 'senior',
-    main_image: {
-      url: 'https://res.cloudinary.com/de9rel1yu/image/upload/v1653296905/pets/taylor-kopel-WX4i1Jq_o0Y-unsplash_wccuph.jpg'
-    },
-    price: 'zdarma',
-    fees: 0,
-    tags: [
-      {name: 's pp'},
-      {name: 'nekouše'},
-      {name: 'přátelský'},
-      {name: 'vhodný pro děti'},
-      {name: 'jídlo zdarma'}
-    ],
-    user: {
-      username: 'loretest'
-    }
-  },
-]
-
 // will be different styles per pet.contract
 const adoptionBadge = 'inline-flex shrink items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800'
 
@@ -143,7 +36,8 @@ export default function CardsAdoption() {
   const fetchPets = async () => {
     setLoading(true)
     try {
-        const response = await axios.get(`${EXPRESS_URL}/api/v1/pets/recommended/main`)
+        const limit = 4
+        const response = await axios.get(`${EXPRESS_URL}/api/v1/pets?limit=${limit}`)
         const data = await response.data.pets
         setPets(data)
         console.log(data)

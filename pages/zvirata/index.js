@@ -6,23 +6,31 @@ import Layout from "../../components/layouts/Layout"
 import Card from "../../components/partials/card/Card"
 import Menu from "../../components/pets/Menu";
 import MobileMenu from "../../components/pets/MobileMenu";
+import Pagination from "../../components/partials/Pagination"
 
 export default function Index() {
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [showSort, setShowSort] = useState(false)
   const [loading, setLoading] = useState(false)
   const [pets, setPets] = useState([])
+  const [categoryTypes, setCategoryTypes] = useState([])
+  const [categoryContracts, setCategoryContracts] = useState([])
+  const [categoryAge, setCategoryAge] = useState([])
+  const [categoryTags, setCategoryTags] = useState([])
 
   const hideMobileMenu = () => setShowMobileMenu(false)
 
+
   useEffect(() => {
     fetchPets()
+    fetchCategories()
+    fetchTags()
   }, [])
 
   const fetchPets = async () => {
     setLoading(true)
     try {
-        const response = await axios.get(`${EXPRESS_URL}/api/v1/pets/recommended/main`)
+        const response = await axios.get(`${EXPRESS_URL}/api/v1/pets`)
         const data = await response.data.pets
         setPets(data)
         await setTimeoutPromise(1000)
@@ -33,6 +41,53 @@ export default function Index() {
         console.log(error)    
     }
   }
+  const fetchTags = async () => {
+    setLoading(true)
+    try {
+        const response = await axios.get(`${EXPRESS_URL}/api/v1/tags`)
+        const data = await response.data.tags
+        setCategoryTags(data)
+        setLoading(false)
+        console.log(data)
+    } catch (error) {
+        setLoading(false)
+        console.log(error)    
+    }
+  }
+  const fetchCategories = async () => {
+    try {
+    await Promise.all([
+        await axios.get(`${EXPRESS_URL}/api/v1/pet-categories/categoryAge`),
+        await axios.get(`${EXPRESS_URL}/api/v1/pet-categories/categoryContracts`),
+        await axios.get(`${EXPRESS_URL}/api/v1/pet-categories/categoryTypes`)
+      ]).then(response => {
+        setCategoryAge(response[0].data.data.types)
+        setCategoryContracts(response[1].data.data.types)
+        setCategoryTypes(response[2].data.data.types)
+      })
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleTagSelect = (tag) => {
+    console.log('clicked tag', tag)
+    setCategoryTags(prevState => prevState.map((prevStateTag) => (
+      tag._id === prevStateTag._id 
+      ?
+      {
+      ...prevStateTag,
+      isSelected: !prevStateTag.isSelected
+      }
+      :
+      {
+        ...prevStateTag
+      }
+    )))
+    console.log('index parent select', categoryTags)
+  }
+
   
   return (
     <Layout>
@@ -42,16 +97,6 @@ export default function Index() {
        { 
         showMobileMenu&&<div>
             <div className="relative z-40 lg:hidden" role="dialog" aria-modal="true">
-          {/*     <!--
-                Off-canvas menu backdrop, show/hide based on off-canvas menu state.
-
-                Entering: "transition-opacity ease-linear duration-300"
-                  From: "opacity-0"
-                  To: "opacity-100"
-                Leaving: "transition-opacity ease-linear duration-300"
-                  From: "opacity-100"
-                  To: "opacity-0"
-              --> */}
               <div className="fixed inset-0 bg-black bg-opacity-25"></div>
             </div>
           </div>
@@ -60,13 +105,7 @@ export default function Index() {
 
         {/* MOBILE, TABLET MENU */}
         <div>
-        {/*   <!--
-            Mobile filter dialog
-
-            Off-canvas menu for mobile, show/hide based on off-canvas menu state.
-          --> */}
-
-          < MobileMenu showMobileMenu={showMobileMenu}  hideMobileMenu={hideMobileMenu} />
+          < MobileMenu showMobileMenu={showMobileMenu}  hideMobileMenu={hideMobileMenu} categoryTypes={categoryTypes} categoryContracts={categoryContracts} categoryAge={categoryAge} categoryTags={categoryTags} handleTagSelect={handleTagSelect} />
         
 
 
@@ -98,10 +137,10 @@ export default function Index() {
             <div className="border-b border-gray-200 pt-24 pb-10">
               <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">Have a look at these pets</h1>
 
-                <div className="lg:flex justify-between mt-2">
+                <div className="lg:flex justify-between items-center mt-2">
                 <input id="search" type="search" placeholder="What are you searching for?" className="block w-60 shadow-sm  px-1 py-3 rounded-md border-0 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 " />
                   
-                  <div className="relative z-20 inline-block text-left ">
+                  <div className="relative z-20 inline-block text-left mt-10 lg:mt-0">
                     <div>
                       <button onClick={() => setShowSort(value => !value)} type="button" className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900" id="menu-button" aria-expanded="false" aria-haspopup="true">
                         Sort
@@ -136,7 +175,7 @@ export default function Index() {
                     <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
                   </svg>
                 </button>
-                <Menu />
+                <Menu categoryTypes={categoryTypes} categoryContracts={categoryContracts} categoryAge={categoryAge} categoryTags={categoryTags} handleTagSelect={handleTagSelect}  />
               </aside>
               <section aria-labelledby="product-heading" className="mt-6 lg:mt-0 lg:col-span-2 xl:col-span-3">
                 <h2 id="product-heading" className="sr-only">Products</h2>
@@ -145,7 +184,11 @@ export default function Index() {
                       <Card key={pet.id} pet={pet} loading={loading} />
                     ))}
                 </div>
+                <div className="mt-10">
+                <Pagination />
+              </div>
               </section>
+
             </div>
           </main>
         </div>
