@@ -3,6 +3,7 @@ import PetCategoryTypes from "./PetCategoryTypes"
 import PetCategoryContracts from "./PetCategoryContracts"
 import PetCategoryAge from "./PetCategoryAge"
 import PetCategoryTags from "./PetCategoryTags"
+import PetLocation from "./PetLocation"
 
 export default function MobileMenu({showMobileMenu, hideMobileMenu, categoryAge, categoryTypes, categoryContracts, categoryTags, handleTagSelect}) {
 
@@ -10,6 +11,7 @@ export default function MobileMenu({showMobileMenu, hideMobileMenu, categoryAge,
   const [showHideCategoryContracts, setShowHideCategoryContracts] = useState(true)
   const [showHideCategoryAge, setShowHideCategoryAge] = useState(true)
   const [showHideTags, setShowHideTags] = useState(true)
+  const [showHideLocation, setShowHideLocation] = useState(true)
   
 
   const renderCategoryTypes= () => ( 
@@ -129,7 +131,30 @@ export default function MobileMenu({showMobileMenu, hideMobileMenu, categoryAge,
        }
     </fieldset>
   </div>
+)
 
+  const renderLocation = () => ( 
+    <div className="border-t border-gray-200 pt-4 pb-4">
+      <fieldset>
+        <legend className="w-full px-2">
+          <button onClick={() => setShowHideLocation(value => !value)} type="button" className="w-full p-2 flex items-center justify-between text-gray-400 hover:text-gray-500" aria-controls="filter-section-0" aria-expanded="false">
+            <span className="text-sm font-medium text-gray-900">Nearest to you</span>
+            <span className="ml-6 h-7 flex items-center">
+              <svg className="rotate-0 h-5 w-5 transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </span>
+          </button>
+        </legend>
+        <div className="pt-4 pb-2 px-4" id="filter-section-0">
+          {showHideLocation && (
+            <div className="space-y-6">
+              <PetLocation />
+            </div>
+          )}
+        </div>
+      </fieldset>
+    </div>
   )
 
   return (
@@ -157,6 +182,7 @@ export default function MobileMenu({showMobileMenu, hideMobileMenu, categoryAge,
             { renderCategoryContracts()}
             { renderTags() }
             {renderCategoryAge()}
+            {renderLocation()}
 
             </form>
           </div>

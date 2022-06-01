@@ -6,6 +6,7 @@ import PetCategoryContracts from "./PetCategoryContracts"
 import PetCategoryAge from "./PetCategoryAge"
 import PetCategoryTags from "./PetCategoryTags"
 import PetBreeds from "./PetBreeds"
+import PetLocation from "./PetLocation"
 
 
 const allowedBreeds = [
@@ -160,6 +161,15 @@ export default function Menu({categoryAge, categoryTypes, categoryContracts, cat
                         <PetCategoryAge key={index} category={category} index={index} />
                       )
                     }
+                  </div>
+                </fieldset>
+              </div>
+
+              <div className="pt-10">
+                <fieldset>
+                  <legend className="block text-sm font-medium text-gray-900">Nearest to you</legend>
+                  <div className="pt-6 space-y-3">
+                    <PetLocation />
                   </div>
                 </fieldset>
               </div>
