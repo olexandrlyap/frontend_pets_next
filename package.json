@@ -11,6 +11,7 @@
   "dependencies": {
     "animate.css": "^4.1.1",
     "axios": "^0.26.1",
+    "clsx": "^1.1.1",
     "lottie-web": "^5.9.1",
     "moment": "^2.29.3",
     "next": "12.1.4",
