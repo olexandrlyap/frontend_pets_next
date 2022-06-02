@@ -5,16 +5,43 @@ import { capitalizeFirstLetter } from '../../helpers'
 
 export default function PetBreeds({breeds, typeID, type}) {
  const [isActive, setIsActive] = useState(false)
+ const [selectedBreeds, setSelectedBreeds] = useState({type, breeds: []})
 
   useEffect(() => {
+    console.log(selectedBreeds)
+  }, [selectedBreeds])
 
-   console.log('pet breeds', type, typeID, breeds)
-  }, [])
+  const handleSelect = (breed) => {
 
-{/* {capitalizeFirstLetter(type) */}
+      setSelectedBreeds(prevState => 
+        ({ 
+          ...prevState,
+          breeds: breeds.map((stateBreed) => (
+              breed.id === stateBreed.id 
+              ?
+                delete(stateBreed.id)
+              :
+              {
+                  ...stateBreed,
+                  breed
+              }
+              
+          ))
+        })
+
+        /* ({
+            ...prevState,
+            breeds: [...prevState.breeds, breed]
+          }) */
+      
+      )
+  //  console.log('breed', breed)
+  //  console.log('selected breed', selectedBreeds)
+  }
 
   return (
     <div  className="p-10">
+        
         <label onClick={() => setIsActive(value => !value)} htmlFor={typeID} className="block text-sm font-medium text-gray-900"> {capitalizeFirstLetter(type)} breeds</label>
         <div className="relative mt-1">
            <div onClick={() => setIsActive(value => !value)}>
@@ -29,11 +56,29 @@ export default function PetBreeds({breeds, typeID, type}) {
 
             {
             isActive&&<ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm" id="options" role="listbox">
+
+                {
+                    selectedBreeds.breeds?.length&&selectedBreeds.breeds.map((breed) =>
+                    <>
+                        <li  key={breed.id}  className="relative cursor-default select-none py-2 pl-8 pr-4 text-gray-900" id="option-0" role="option" tabindex="-1">
+                            <span className="block truncate">{breed.name}</span>
+
+                            <span className="absolute inset-y-0 left-0 flex items-center pl-1.5 text-indigo-600">
+
+                            <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                            </span>
+                        </li>
+                    </>
+                    )
+                }
+
                 {
                     breeds?.length&&breeds.map((breed) => 
                     <>
-                        <li key={breed.id} className="relative cursor-default select-none py-2 pl-8 pr-4 text-gray-900" id="option-0" role="option" tabindex="-1">
-                           <span className="block truncate">{breed.name}</span>
+                        <li  key={breed.id} className="relative cursor-default select-none py-2 pl-8 pr-4 text-gray-900" id="option-0" role="option" tabindex="-1">
+                           <span onClick={() => handleSelect(breed)} className="block truncate">{breed.name}</span>
                         </li>
                     </>
                 )}
