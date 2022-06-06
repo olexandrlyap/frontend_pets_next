@@ -7,7 +7,7 @@ import CardLoadingSkeleton from './CardLoadingSkeleton'
 import { EXPRESS_URL } from '../../../config'
 import { formatTimeFromNow } from '../../../helpers'
 
-
+const PriceWithoutAgreement = ({ price }) => price > 0 ? `${price} Kč` : 'Zdarma'
 
 export default function Card({pet, loading, scale, showAlert}) {
   const [isHovered, setIsHovered] = useState(false)
@@ -111,7 +111,8 @@ export default function Card({pet, loading, scale, showAlert}) {
       <a
         className="relative flex bg-gray-100 border border-transparent rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-200"
       >
-        {pet.price} <span className="sr-only">, button</span>
+        {pet.isAgreement ? 'Agreement' : <PriceWithoutAgreement price={pet.price} />}
+        <span className="sr-only">, button</span>
       </a>
     </div>
   </div>
