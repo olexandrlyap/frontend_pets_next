@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import axios from "axios"
 import {EXPRESS_URL} from '../../config'
 import PetCategoryTypes from "./PetCategoryTypes"
 import PetCategoryContracts from "./PetCategoryContracts"
 import PetCategoryAge from "./PetCategoryAge"
-import PetCategoryTags from "./PetCategoryTags"
+import PetCategoryTag from "./PetCategoryTag"
 import PetBreeds from "./PetBreeds"
 import PetLocation from "./PetLocation"
 
@@ -66,13 +66,11 @@ const allowedBreeds = [
 ]
 
 
-export default function Menu({categoryAge, categoryTypes, categoryContracts, categoryTags, handleTagSelect}) {
-
-
-  useEffect(() => {
-    
+export default function Menu({categoryAge, categoryTypes, categoryContracts, categoryTags}) {
+  const [selectedTags, setSelectedTags] = useState({})
+  const handleTagSelect = useCallback((tagID) => {
+    setSelectedTags(tags => ({ ...tags, [tagID]: !tags[tagID] }))
   }, [])
-
 
   return (
     <div className="hidden lg:block ">
@@ -137,7 +135,7 @@ export default function Menu({categoryAge, categoryTypes, categoryContracts, cat
                     <div className="flex flex-wrap items-baseline mt-6 pb-6  border-slate-200">
                       {
                         categoryTags.map((tag, index) => 
-                          <PetCategoryTags key={index} tag={tag} index={index} handleTagSelect={handleTagSelect}/>
+                          <PetCategoryTag key={index} tag={tag} index={index} handleTagSelect={handleTagSelect} isSelected={selectedTags[tag.id]} />
                         )
                       }
                     </div>

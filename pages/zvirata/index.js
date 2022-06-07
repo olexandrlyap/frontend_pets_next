@@ -1,91 +1,53 @@
-import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { EXPRESS_URL }from '../../config'
-import { setTimeoutPromise } from '../../helpers'
-import Layout from "../../components/layouts/Layout"
-import Card from "../../components/partials/card/Card"
+import { useEffect, useState } from "react";
+import { QueryClient } from "react-query";
+import { fetchPets, usePetsQuery, useTagsQuery } from "../../api";
+import Layout from "../../components/layouts/Layout";
+import Card from "../../components/partials/card/Card";
+import Pagination from "../../components/partials/Pagination";
 import Menu from "../../components/pets/Menu";
 import MobileMenu from "../../components/pets/MobileMenu";
-import Pagination from "../../components/partials/Pagination"
+import { EXPRESS_URL } from '../../config';
 
-export default function Index() {
+export default function Zvirata() {
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [showSort, setShowSort] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [pets, setPets] = useState([])
   const [categoryTypes, setCategoryTypes] = useState([])
   const [categoryContracts, setCategoryContracts] = useState([])
   const [categoryAge, setCategoryAge] = useState([])
-  const [categoryTags, setCategoryTags] = useState([])
+
+  const {
+    data: pets = [],
+    isLoading: isPetsLoading,
+  } = usePetsQuery()
+  const {
+    data: tags = [],
+    isLoading: isTagsLoading,
+  } = useTagsQuery()
+
+  const loading = isPetsLoading || isTagsLoading
 
   const hideMobileMenu = () => setShowMobileMenu(false)
 
-
-  useEffect(() => {
-    fetchPets()
-    fetchCategories()
-    fetchTags()
-  }, [])
-
-  const fetchPets = async () => {
-    setLoading(true)
-    try {
-        const response = await axios.get(`${EXPRESS_URL}/api/v1/pets`)
-        const data = await response.data.pets
-        setPets(data)
-        await setTimeoutPromise(1000)
-        setLoading(false)
-        console.log(data)
-    } catch (error) {
-        setLoading(false)
-        console.log(error)    
-    }
-  }
-  const fetchTags = async () => {
-    setLoading(true)
-    try {
-        const response = await axios.get(`${EXPRESS_URL}/api/v1/tags`)
-        const data = await response.data.tags
-        setCategoryTags(data)
-        setLoading(false)
-        console.log(data)
-    } catch (error) {
-        setLoading(false)
-        console.log(error)    
-    }
-  }
   const fetchCategories = async () => {
     try {
-    await Promise.all([
-        await axios.get(`${EXPRESS_URL}/api/v1/pet-categories/categoryAge`),
-        await axios.get(`${EXPRESS_URL}/api/v1/pet-categories/categoryContracts`),
-        await axios.get(`${EXPRESS_URL}/api/v1/pet-categories/categoryTypes`)
+      await Promise.all([
+        axios.get(`${EXPRESS_URL}/api/v1/pet-categories/categoryAge`),
+        axios.get(`${EXPRESS_URL}/api/v1/pet-categories/categoryContracts`),
+        axios.get(`${EXPRESS_URL}/api/v1/pet-categories/categoryTypes`)
       ]).then(response => {
         setCategoryAge(response[0].data.data.types)
         setCategoryContracts(response[1].data.data.types)
         setCategoryTypes(response[2].data.data.types)
       })
-      
     } catch (error) {
       console.log(error)
     }
   }
 
-  const handleTagSelect = (tag) => {
-    console.log('clicked tag', tag)
-    setCategoryTags(prevState => prevState.map((prevStateTag) => (
-      tag._id === prevStateTag._id 
-      ?
-      {
-      ...prevStateTag,
-      isSelected: !prevStateTag.isSelected
-      }
-      :
-      {
-        ...prevStateTag
-      }
-    )))
-  }
+  useEffect(() => {
+    fetchCategories()
+  }, [])
 
   
   return (
@@ -104,7 +66,7 @@ export default function Index() {
 
         {/* MOBILE, TABLET MENU */}
         <div>
-          < MobileMenu showMobileMenu={showMobileMenu}  hideMobileMenu={hideMobileMenu} categoryTypes={categoryTypes} categoryContracts={categoryContracts} categoryAge={categoryAge} categoryTags={categoryTags} handleTagSelect={handleTagSelect} />
+          < MobileMenu showMobileMenu={showMobileMenu}  hideMobileMenu={hideMobileMenu} categoryTypes={categoryTypes} categoryContracts={categoryContracts} categoryAge={categoryAge} categoryTags={tags} />
         
 
 
@@ -174,7 +136,7 @@ export default function Index() {
                     <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
                   </svg>
                 </button>
-                <Menu categoryTypes={categoryTypes} categoryContracts={categoryContracts} categoryAge={categoryAge} categoryTags={categoryTags} handleTagSelect={handleTagSelect}  />
+                <Menu categoryTypes={categoryTypes} categoryContracts={categoryContracts} categoryAge={categoryAge} categoryTags={tags}  />
               </aside>
               <section aria-labelledby="product-heading" className="mt-6 lg:mt-0 lg:col-span-2 xl:col-span-3">
                 <h2 id="product-heading" className="sr-only">Products</h2>
@@ -195,4 +157,14 @@ export default function Index() {
 
     </Layout>
   )
+}
+
+export async function getServerSideProps() {
+  const queryClient = new QueryClient();
+  queryClient.prefetchQuery(['pets', 0, undefined], fetchPets)
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    }
+  }
 }

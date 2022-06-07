@@ -1,11 +1,15 @@
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import PetCategoryTypes from "./PetCategoryTypes"
 import PetCategoryContracts from "./PetCategoryContracts"
 import PetCategoryAge from "./PetCategoryAge"
-import PetCategoryTags from "./PetCategoryTags"
+import PetCategoryTag from "./PetCategoryTag"
 import PetLocation from "./PetLocation"
 
-export default function MobileMenu({showMobileMenu, hideMobileMenu, categoryAge, categoryTypes, categoryContracts, categoryTags, handleTagSelect}) {
+export default function MobileMenu({showMobileMenu, hideMobileMenu, categoryAge, categoryTypes, categoryContracts, categoryTags}) {
+  const [selectedTags, setSelectedTags] = useState({})
+  const handleTagSelect = useCallback((tagID) => {
+    setSelectedTags(tags => ({ ...tags, [tagID]: !tags[tagID] }))
+  }, [])
 
   const [showHideCategoryTypes, setShowHideCategoryTypes] = useState(true)
   const [showHideCategoryContracts, setShowHideCategoryContracts] = useState(true)
@@ -118,7 +122,7 @@ export default function MobileMenu({showMobileMenu, hideMobileMenu, categoryAge,
           <div className="flex flex-wrap pt-1 pb-2 px-4 items-baseline  pb-6  border-slate-200">
              {
                 categoryTags.map((tag, index) => 
-                  <PetCategoryTags key={index} tag={tag} index={index} handleTagSelect={handleTagSelect}/>
+                  <PetCategoryTag key={index} tag={tag} index={index} handleTagSelect={handleTagSelect} isSelected={selectedTags[tag.id]} />
                 )
               }
 
