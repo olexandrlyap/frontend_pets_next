@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useEffect } from "react";
+import { createContext, useReducer, useEffect } from "react";
 import { AuthReducer, initialState } from './AuthReducer'
 import { getUser } from './actions/index'
 
@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
     }
     authenticate()
     console.log('mounted AuthProvider state', state)
-  
   }, [])
  
   return (
