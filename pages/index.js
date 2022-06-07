@@ -1,3 +1,5 @@
+import { QueryClient } from "react-query"
+import { fetchPets } from "../api"
 import Layout from "../components/layouts/Layout"
 import Header from "../components/mainPage/header/Header"
 import Main from "../components/mainPage/main/Main"
@@ -13,8 +15,12 @@ export default function Home() {
 
 
 export async function getServerSideProps(context) {
-  console.log('main page')
+  const queryClient = new QueryClient()
+  queryClient.prefetchQuery(['pets', 0, 4], () => fetchPets({ skip: 0, limit: 4 }))
+
   return {
-    props: {}, // will be passed to the page component as props
+    props: {
+      dehydratedState: dehydrate(queryClient)
+    }, // will be passed to the page component as props
   }
 }

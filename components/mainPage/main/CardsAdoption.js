@@ -1,15 +1,9 @@
 
-import { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import { useState } from "react";
 import Link from "next/link"
-import { EXPRESS_URL }from '../../../config'
 import { setTimeoutPromise } from '../../../helpers'
-import { Navigation, Pagination, Scrollbar, A11y, EffectFade  } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import ShowMoreButton from "../../partials/ShowMoreButton"
-import test from '../../../assets/test.jpg'
-import Image from "next/image"
 import Card from "../../partials/card/Card"
+import { usePetsQuery } from "../../../api"
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -24,30 +18,11 @@ const adoptionBadge = 'inline-flex shrink items-center px-2.5 py-0.5 rounded-ful
 
 
 export default function CardsAdoption() {
-  const [pets, setPets] = useState([])
-  const [loading, setLoading] = useState(false)
   const [showAlertResponse, setShowAlertResponse] = useState(false)
   const [alertText, setAlertText] = useState('')
-
-  useEffect(() => {
-    fetchPets()
-  }, [])
-
-  const fetchPets = async () => {
-    setLoading(true)
-    try {
-        const limit = 4
-        const response = await axios.get(`${EXPRESS_URL}/api/v1/pets?limit=${limit}`)
-        const data = await response.data.pets
-        setPets(data)
-        console.log(data)
-        await setTimeoutPromise(2000)
-        setLoading(false)
-    } catch (error) {
-        setLoading(false)
-        console.log(error)    
-    }
-  }
+  
+  const limit = 4
+  const { data = [], isLoading } = usePetsQuery({ limit })
 
   const showAlert = async (text) => {
     setShowAlertResponse(true)
@@ -74,8 +49,8 @@ export default function CardsAdoption() {
       
       {/* Without a slider */}
       <div className="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-        {pets.map((pet) => (
-           <Card key={pet.id} pet={pet} loading={loading} scale={true} showAlert={showAlert}/>
+        {data.map((pet) => (
+           <Card key={pet.id} pet={pet} loading={isLoading} scale={true} showAlert={showAlert}/>
         ))}
       </div>
 
