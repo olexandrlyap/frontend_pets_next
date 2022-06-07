@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { QueryClient } from "react-query";
-import { fetchPets, usePetsQuery, useTagsQuery } from "../../api";
+import { fetchCategoryAge, fetchCategoryContracts, fetchCategoryTypes, fetchPets, fetchTags, useCategoryAgeQuery, useCategoryContractsQuery, useCategoryTypesQuery, usePetsQuery, useTagsQuery } from "../../api";
 import Layout from "../../components/layouts/Layout";
 import Card from "../../components/partials/card/Card";
 import Pagination from "../../components/partials/Pagination";
@@ -12,44 +12,17 @@ import { EXPRESS_URL } from '../../config';
 export default function Zvirata() {
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [showSort, setShowSort] = useState(false)
-  const [categoryTypes, setCategoryTypes] = useState([])
-  const [categoryContracts, setCategoryContracts] = useState([])
-  const [categoryAge, setCategoryAge] = useState([])
 
-  const {
-    data: pets = [],
-    isLoading: isPetsLoading,
-  } = usePetsQuery()
-  const {
-    data: tags = [],
-    isLoading: isTagsLoading,
-  } = useTagsQuery()
+  const { data: pets = [], isLoading: isPetsLoading } = usePetsQuery()
+  const { data: tags = [], isLoading: isTagsLoading } = useTagsQuery()
+  const { data: categoryAge = [], isLoading: isCategoryAgeLoading } = useCategoryAgeQuery()
+  const { data: categoryContracts = [], isLoading: isCategoryContractsLoading } = useCategoryContractsQuery()
+  const { data: categoryTypes = [], isLoading: isCategoryTypesLoading } = useCategoryTypesQuery()
 
-  const loading = isPetsLoading || isTagsLoading
+  const loading = isPetsLoading || isTagsLoading || isCategoryAgeLoading || isCategoryContractsLoading || isCategoryTypesLoading
 
   const hideMobileMenu = () => setShowMobileMenu(false)
 
-  const fetchCategories = async () => {
-    try {
-      await Promise.all([
-        axios.get(`${EXPRESS_URL}/api/v1/pet-categories/categoryAge`),
-        axios.get(`${EXPRESS_URL}/api/v1/pet-categories/categoryContracts`),
-        axios.get(`${EXPRESS_URL}/api/v1/pet-categories/categoryTypes`)
-      ]).then(response => {
-        setCategoryAge(response[0].data.data.types)
-        setCategoryContracts(response[1].data.data.types)
-        setCategoryTypes(response[2].data.data.types)
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  useEffect(() => {
-    fetchCategories()
-  }, [])
-
-  
   return (
     <Layout>
       <div className="bg-white">
@@ -162,6 +135,11 @@ export default function Zvirata() {
 export async function getServerSideProps() {
   const queryClient = new QueryClient();
   queryClient.prefetchQuery(['pets', 0, undefined], fetchPets)
+  queryClient.prefetchQuery('tags', fetchTags)
+  queryClient.prefetchQuery('categoryAge', fetchCategoryAge)
+  queryClient.prefetchQuery('categoryContracts', fetchCategoryContracts)
+  queryClient.prefetchQuery('categoryTypes', fetchCategoryTypes)
+
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
