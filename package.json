@@ -21,6 +21,7 @@
     "react-dom": "18.0.0",
     "react-id-swiper": "^4.0.0",
     "react-loading-skeleton": "^3.1.0",
+    "react-query": "^3.39.1",
     "react-responsive-carousel": "^3.2.23",
     "swiper": "^8.1.4"
   },
